@@ -1,0 +1,39 @@
+{
+  "name": "FaunaDex Montréal",
+  "short_name": "FaunaDex",
+  "description": "Pokédex de fauna silvestre de la Isla de Montréal — avistamientos, fotografías y logros.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070d08",
+  "theme_color": "#0b1f0e",
+  "orientation": "portrait",
+  "lang": "es",
+  "categories": ["lifestyle", "sports", "education"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Pokédex",
+      "url": "./index.html#pokedex",
+      "description": "Ver todas las especies"
+    },
+    {
+      "name": "Dashboard",
+      "url": "./index.html#dashboard",
+      "description": "Mi progreso"
+    }
+  ]
+}

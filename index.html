@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1f0e">
+  <meta name="description" content="Pokédex de fauna silvestre de la Isla de Montréal — 56 especies, avistamientos, logros y rutas en bicicleta.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FaunaDex">
+  <title>FaunaDex Montréal</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── SPLASH ────────────────────────────────────────────── -->
+<div id="splash">
+  <div class="splash-icon">🌿</div>
+  <div class="splash-title">FaunaDex Montréal</div>
+  <div class="splash-sub">56 especies · Isla de Montréal</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<!-- ── ACHIEVEMENT POPUP ──────────────────────────────────── -->
+<div class="achievement-popup" id="achievementPopup">
+  <div class="popup-icon">🏆</div>
+  <div>
+    <div class="popup-eyebrow">🔓 Logro desbloqueado</div>
+    <div class="popup-name" id="popupName"></div>
+    <div class="popup-desc" id="popupDesc"></div>
+  </div>
+</div>
+
+<!-- ── TOAST ─────────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<!-- ── INPUT HIDDEN ──────────────────────────────────────── -->
+<input type="file" id="importFile" accept=".json" style="display:none">
+
+<!-- ── APP ───────────────────────────────────────────────── -->
+<div id="app">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <span class="app-header-icon">🌿</span>
+    <span class="app-header-title">FaunaDex Montréal</span>
+    <span class="app-header-badge" id="headerBadge">0/56</span>
+  </header>
+
+  <!-- ── DASHBOARD ──────────────────────────────────────── -->
+  <div class="screen active" id="screen-dashboard">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- ── POKÉDEX ────────────────────────────────────────── -->
+  <div class="screen" id="screen-pokedex">
+    <div class="search-bar">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          class="search-input"
+          id="searchInput"
+          type="search"
+          placeholder="Buscar especie..."
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        >
+        <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+      </div>
+    </div>
+
+    <div class="filter-scroll" id="catFilterRow"></div>
+    <div class="diff-filters" id="diffFilterRow"></div>
+
+    <div class="species-list" id="speciesList"></div>
+  </div>
+
+  <!-- ── LIFE LIST ──────────────────────────────────────── -->
+  <div class="screen" id="screen-lifelist">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- ── ACHIEVEMENTS ───────────────────────────────────── -->
+  <div class="screen" id="screen-achievements">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- ── SETTINGS ───────────────────────────────────────── -->
+  <div class="screen" id="screen-settings">
+    <div class="profile-header">
+      <div class="profile-avatar">🦆</div>
+      <div class="profile-name">Observador de Fauna</div>
+      <div class="profile-sub">Isla de Montréal · En bicicleta 🚲</div>
+    </div>
+
+    <div class="settings-list">
+      <div class="settings-group">
+        <div class="settings-item" onclick="exportBackup()">
+          <span class="settings-icon">💾</span>
+          <div class="settings-body">
+            <div class="settings-label">Exportar respaldo</div>
+            <div class="settings-sub">Guarda tu progreso como archivo JSON</div>
+          </div>
+          <span class="settings-arrow">›</span>
+        </div>
+        <div class="settings-item" onclick="document.getElementById('importFile').click()">
+          <span class="settings-icon">📂</span>
+          <div class="settings-body">
+            <div class="settings-label">Importar respaldo</div>
+            <div class="settings-sub">Restaurar desde archivo JSON</div>
+          </div>
+          <span class="settings-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-item" onclick="window.open('https://www.allaboutbirds.org','_blank')">
+          <span class="settings-icon">🦅</span>
+          <div class="settings-body">
+            <div class="settings-label">All About Birds (Cornell)</div>
+            <div class="settings-sub">Identificación y cantos de aves</div>
+          </div>
+          <span class="settings-arrow">↗</span>
+        </div>
+        <div class="settings-item" onclick="window.open('https://www.inaturalist.org','_blank')">
+          <span class="settings-icon">🌿</span>
+          <div class="settings-body">
+            <div class="settings-label">iNaturalist</div>
+            <div class="settings-sub">Avistamientos de la comunidad</div>
+          </div>
+          <span class="settings-arrow">↗</span>
+        </div>
+        <div class="settings-item" onclick="window.open('https://ebird.org/region/CA-QC-MR','_blank')">
+          <span class="settings-icon">🐦</span>
+          <div class="settings-body">
+            <div class="settings-label">eBird Montréal</div>
+            <div class="settings-sub">Reportes locales de observadores</div>
+          </div>
+          <span class="settings-arrow">↗</span>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-item" onclick="window.open('https://www.montreal.ca/sujets/parcs-nature','_blank')">
+          <span class="settings-icon">🗺️</span>
+          <div class="settings-body">
+            <div class="settings-label">Parcs-Nature de Montréal</div>
+            <div class="settings-sub">Información oficial y mapas de senderos</div>
+          </div>
+          <span class="settings-arrow">↗</span>
+        </div>
+        <div class="settings-item" onclick="window.open('https://www.google.com/maps/search/parcs+nature+ile+de+montreal','_blank')">
+          <span class="settings-icon">📍</span>
+          <div class="settings-body">
+            <div class="settings-label">Parques en Google Maps</div>
+            <div class="settings-sub">Ver todos los spots en el mapa</div>
+          </div>
+          <span class="settings-arrow">↗</span>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-item" onclick="resetConfirm()">
+          <span class="settings-icon">🗑️</span>
+          <div class="settings-body">
+            <div class="settings-label" style="color:var(--red)">Borrar todo el progreso</div>
+            <div class="settings-sub">Esta acción no se puede deshacer</div>
+          </div>
+          <span class="settings-arrow" style="color:var(--red)">›</span>
+        </div>
+      </div>
+
+      <div style="padding:16px;text-align:center">
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);letter-spacing:2px">FAUNADEX MONTRÉAL v1.0</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">56 especies · Isla de Montréal</div>
+        <div style="font-size:11px;color:var(--text3)">Datos offline · Progreso local</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOTTOM NAV ─────────────────────────────────────── -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Inicio</span>
+    </button>
+    <button class="nav-item" data-tab="pokedex" onclick="switchTab('pokedex')">
+      <span class="nav-icon">📋</span>
+      <span class="nav-label">Pokédex</span>
+    </button>
+    <button class="nav-item" data-tab="lifelist" onclick="switchTab('lifelist')">
+      <span class="nav-icon">📖</span>
+      <span class="nav-label">Mi Lista</span>
+    </button>
+    <button class="nav-item" data-tab="achievements" onclick="switchTab('achievements')">
+      <span class="nav-icon">🏆</span>
+      <span class="nav-label">Logros</span>
+    </button>
+    <button class="nav-item" data-tab="settings" onclick="switchTab('settings')">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Perfil</span>
+    </button>
+  </nav>
+</div><!-- /app -->
+
+<script>
+// Search wiring
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+searchInput.addEventListener('input', e => {
+  S.search = e.target.value;
+  searchClear.classList.toggle('visible', S.search.length > 0);
+  renderList();
+});
+function clearSearch() {
+  S.search = ''; searchInput.value = '';
+  searchClear.classList.remove('visible');
+  renderList();
+}
+
+// Achievement popup fix
+document.getElementById('achievementPopup').querySelector('.popup-name').id = 'popupName2';
+function showAchievementPopup(a) {
+  const p = document.getElementById('achievementPopup');
+  p.querySelector('.popup-icon').textContent = a.icon;
+  p.querySelector('.popup-name, #popupName2').textContent = a.name;
+  p.querySelector('.popup-desc').textContent = a.desc;
+  p.classList.add('show');
+  setTimeout(() => p.classList.remove('show'), 3000);
+}
+
+// Header badge
+function updateBadge() {
+  document.getElementById('headerBadge').textContent = `${DB.captured.size}/56`;
+}
+
+// Reset
+function resetConfirm() {
+  if (confirm('¿Borrar todo el progreso? Esta acción no se puede deshacer.')) {
+    DB = { captured: new Set(), sightings: {}, userPhotos: {}, achievements: new Set() };
+    localStorage.removeItem('faunadex_v3');
+    renderAll();
+    showToast('Progreso borrado');
+  }
+}
+</script>
+<script src="app.js"></script>
+</body>
+</html>
